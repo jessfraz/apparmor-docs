@@ -18,6 +18,7 @@ WORKDIR /usr/src/apparmor/documentation
 RUN bash -c '( \
 	find /usr/src/apparmor/documentation -name "*.odt" -print0 | while IFS= read -r -d "" file; do \
 		clean_file=${file// /_}; \
+		clean_file=${clean_file//_-_/-}; \
 		clean_file=$(echo $clean_file | tr "[:upper:]" "[:lower:]"); \
 		unoconv -v -f pdf --output "$clean_file" "$file"; \
 	done \
