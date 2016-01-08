@@ -1,10 +1,10 @@
-FROM jess/pandoc
+FROM debian:sid
 
 RUN apt-get update && apt-get install -y \
 	bzr \
 	ca-certificates \
-	default-jdk \
 	libreoffice \
+	unoconv \
 	--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -20,11 +20,6 @@ RUN bash -c '( \
 		clean_file=${file// /_}; \
 		clean_file=${clean_file//_-_/-}; \
 		clean_file=$(echo $clean_file | tr "[:upper:]" "[:lower:]"); \
-		clean_file=${clean_file%.odt*}; \
-		file2=${file%.odt*}; \
-		libreoffice --headless --convert-to htm:HTML --outdir . "$file"; \
-		pandoc "${file2}.htm" -o "${clean_file}.md"; \
+		unoconv -v -f pdf --output "$clean_file" "$file"; \
 	done \
 	)'
-
-ENTRYPOINT []
