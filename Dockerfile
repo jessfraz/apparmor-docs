@@ -20,6 +20,8 @@ RUN bash -c '( \
 		clean_file=${file// /_}; \
 		clean_file=${clean_file//_-_/-}; \
 		clean_file=$(echo $clean_file | tr "[:upper:]" "[:lower:]"); \
+		clean_file=${clean_file//odt/pdf}; \
+		echo "Generating pdf --> $clean_file"; \
 		unoconv -v -f pdf --output "$clean_file" "$file"; \
 	done \
 	)'
