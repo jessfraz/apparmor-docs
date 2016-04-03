@@ -1,7 +1,7 @@
 .SUFFIXES: .odt .pdf
 
 IN := odt
-pdf := pdf
+OUT := pdf
 
 .PHONY: all
 all: make_directories .odt.pdf
@@ -13,14 +13,14 @@ build:
 %.odt: build
 	-$(shell docker run --rm jess/apparmor-docs bash -c 'tar -c *.odt' | tar -xvC $(IN) > /dev/null)
 
-.odt.pdf: build
+.odt.pdf: build %.odt
 	-$(shell docker run --rm jess/apparmor-docs bash -c 'tar -c *.pdf' | tar -xvC $(OUT) > /dev/null)
 
 .PHONY: make_directories
 make_directories: $(IN)/ $(OUT)/
 
 $(IN)/:
-    mkdir -p $@
+	@mkdir -p $@
 
 $(OUT)/:
-    mkdir -p $@
+	@mkdir -p $@
