@@ -10,7 +10,7 @@ all: make_directories .odt.pdf
 
 .PHONY: build
 build:
-	@docker build --rm --force-rm -t $(DOCKER_IMAGE) .
+	@docker build --rm --force-rm --no-cache -t $(DOCKER_IMAGE) .
 
 %.odt: build
 	-$(shell docker run --rm $(DOCKER_IMAGE) bash -c 'tar -c *.odt' | tar -xvC $(IN) > /dev/null)
