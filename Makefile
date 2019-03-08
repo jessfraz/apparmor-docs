@@ -12,11 +12,13 @@ all: make_directories .odt.pdf ## Generate the PDFs.
 build: ## Build the docker image.
 	@docker build --rm --force-rm --no-cache -t $(DOCKER_IMAGE) .
 
+DOCKER_FLAGS=docker run --rm --disable-content-trust=true $(DOCKER_IMAGE)
+
 %.odt: build
-	-$(shell docker run --rm $(DOCKER_IMAGE) bash -c 'tar -c *.odt' | tar -xvC $(IN) > /dev/null)
+	-$(shell $(DOCKER_FLAGS) bash -c 'tar -c *.odt' | tar -xvC $(IN) > /dev/null)
 
 .odt.pdf: build %.odt
-	-$(shell docker run --rm $(DOCKER_IMAGE) bash -c 'tar -c *.pdf' | tar -xvC $(OUT) > /dev/null)
+	-$(shell $(DOCKER_FLAGS) bash -c 'tar -c *.pdf' | tar -xvC $(OUT) > /dev/null)
 
 .PHONY: make_directories
 make_directories: $(IN)/ $(OUT)/

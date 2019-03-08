@@ -1,7 +1,7 @@
 FROM debian:jessie
 
 RUN apt-get update && apt-get install -y \
-	bzr \
+	git \
 	ca-certificates \
 	libreoffice \
 	unoconv \
@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 # clone the repo
-RUN mkdir -p /usr/src/apparmor \
-	&& bzr export /usr/src/apparmor lp:~apparmor-dev/apparmor/master
+RUN git clone https://gitlab.com/apparmor/apparmor.git /usr/src/apparmor
 
 WORKDIR /usr/src/apparmor/documentation
 
